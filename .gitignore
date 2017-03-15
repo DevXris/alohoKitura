@@ -3,3 +3,6 @@
 /Packages
 /*.xcodeproj
 /docker-compose.yml
+/.swift-version
+/.cfignore
+/manifest.yml
