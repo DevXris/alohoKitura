@@ -12,6 +12,11 @@ import SwiftyJSON
 import Kitura
 import CloudFoundryEnv
 import Configuration
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
 
 public class Controller {
     
@@ -57,7 +62,13 @@ public class Controller {
     
     public func getRandomVehicle(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         
-        let index = Int(arc4random_uniform(UInt32(vehicles.count)))
+        #if os(Linux)
+            srandom(UInt32(Date().timeIntervalSince1970)) // random seed
+            let index = random() % vehicles.count
+        #else
+            let index = Int(arc4random_uniform(UInt32(vehicles.count)))
+        #endif
+        
         let json = JSON(vehicles[index])
         
         try response.status(.OK).send(json: json).end()
