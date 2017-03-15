@@ -32,7 +32,7 @@ public class Controller {
         Log.debug("Get - / router handler...")
         
         var json = JSON([:])
-        json["Aloha"].stringValue = "Beginner API with Swift, Kitura and Bluemix"
+        json["alohaKitura"].stringValue = "Beginner API with Swift, Kitura and Bluemix"
         json["myName"].stringValue = "DevXris"
         json["myOrg"].stringValue = "Individual Developer"
         
