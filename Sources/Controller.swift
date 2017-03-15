@@ -34,6 +34,7 @@ public class Controller {
         router = Router()
         router.get("/", handler: getMain)
         router.get("/vehicles", handler: getVehicles)
+        router.get("/vehicles/random", handler: getRandomVehicle)
     }
     
     public func getMain(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
@@ -50,6 +51,14 @@ public class Controller {
     public func getVehicles(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         
         let json = JSON(vehicles)
+        
+        try response.status(.OK).send(json: json).end()
+    }
+    
+    public func getRandomVehicle(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        
+        let index = Int(arc4random_uniform(UInt32(vehicles.count)))
+        let json = JSON(vehicles[index])
         
         try response.status(.OK).send(json: json).end()
     }
