@@ -21,11 +21,19 @@ public class Controller {
     var url: String { return configManager.url }
     var port: Int { return configManager.port }
     
+    let vehicles: [Dictionary<String, Any>] = {
+        return [["type": "bike", "maker": "Giant", "model": "Indeed Macchihato", "year": 1989],
+                ["type": "motorbike","maker": "Yamaha", "model": "Jog 50", "year": 1999],
+                ["type": "auto", "maker": "BMW", "model": "330ci", "year": 2007],
+                ["type": "auto", "maker": "Mazda", "model": "CX5", "year": 2013]]
+    }()
+    
     init() throws {
     
         configManager = ConfigurationManager()
         router = Router()
         router.get("/", handler: getMain)
+        router.get("/vehicles", handler: getVehicles)
     }
     
     public func getMain(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
@@ -35,6 +43,13 @@ public class Controller {
         json["alohaKitura"].stringValue = "Beginner API with Swift, Kitura and Bluemix"
         json["myName"].stringValue = "DevXris"
         json["myOrg"].stringValue = "Individual Developer"
+        
+        try response.status(.OK).send(json: json).end()
+    }
+    
+    public func getVehicles(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        
+        let json = JSON(vehicles)
         
         try response.status(.OK).send(json: json).end()
     }
